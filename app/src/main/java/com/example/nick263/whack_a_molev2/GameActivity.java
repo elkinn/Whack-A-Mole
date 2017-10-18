@@ -28,7 +28,6 @@ public class GameActivity extends AppCompatActivity {
     ImageButton[] moles;
     int currentMole;
     CountDownTimer timer;
-    boolean isWholeSecond;
     MediaPlayer mediaPlayer;
 
     @Override
@@ -46,18 +45,17 @@ public class GameActivity extends AppCompatActivity {
         mole7 = (ImageButton)findViewById(R.id.mole7);
         moles = new ImageButton[]{mole1, mole2, mole3, mole4, mole5, mole6, mole7};
 
-        isWholeSecond = false;
         score = 0;
         time = 60;
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.konouha);
         mediaPlayer.start();
-        timer = new CountDownTimer(60000, 500) {
+        timer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long l) {
-                if(isWholeSecond) {
-                    time--;
-                    timeView.setText(Integer.toString(time));
-                }
+
+                time--;
+                timeView.setText(Integer.toString(time));
+
                 currentMole = (int)(Math.random()*7);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -77,11 +75,11 @@ public class GameActivity extends AppCompatActivity {
                         });
                     }
                 });
-                isWholeSecond = !isWholeSecond;
             }
 
             @Override
             public void onFinish() {
+                mediaPlayer.stop();
                 Intent endIntent = new Intent(GameActivity.this, EndActivity.class);
                 endIntent.putExtra("SCORE", score);
                 startActivity(endIntent);
