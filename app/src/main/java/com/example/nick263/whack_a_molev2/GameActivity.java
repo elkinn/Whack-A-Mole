@@ -75,6 +75,12 @@ public class GameActivity extends AppCompatActivity {
                         });
                     }
                 });
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        moles[currentMole].setVisibility(View.GONE);
+                    }
+                });
             }
 
             @Override
