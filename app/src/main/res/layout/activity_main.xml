@@ -10,14 +10,15 @@
         android:id="@+id/textView"
         android:layout_width="292dp"
         android:layout_height="122dp"
-        android:text="Welcome to Whack-A-Mole! You have 90 seconds to whack all the moles you can!"
+        android:text="Welcome to Whack-A-Mole! You have 60 seconds to whack all the moles you can!"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.149" />
+        app:layout_constraintVertical_bias="0.226"
+        app:layout_constraintHorizontal_bias="0.495" />
 
     <Button
         android:id="@+id/button"

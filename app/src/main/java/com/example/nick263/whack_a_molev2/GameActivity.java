@@ -49,38 +49,32 @@ public class GameActivity extends AppCompatActivity {
         time = 60;
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.konouha);
         mediaPlayer.start();
+
         timer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long l) {
-
                 time--;
                 timeView.setText(Integer.toString(time));
-
                 currentMole = (int)(Math.random()*7);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         moles[currentMole].setVisibility(View.VISIBLE);
-                    }
-                });
-                moles[currentMole].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        score++;
-                        runOnUiThread(new Runnable() {
+                        moles[currentMole].setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void run() {
-                                moles[currentMole].setVisibility(View.GONE);
+                            public void onClick(View view) {
+                                score++;
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        moles[currentMole].setVisibility(View.GONE);
+                                    }
+                                });
                             }
                         });
                     }
                 });
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        moles[currentMole].setVisibility(View.GONE);
-                    }
-                });
+                moles[currentMole].setOnClickListener(null);
             }
 
             @Override
