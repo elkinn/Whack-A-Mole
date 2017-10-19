@@ -50,40 +50,67 @@ public class GameActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.konouha);
         mediaPlayer.start();
 
-        timer = new CountDownTimer(60000, 1000) {
+        final Runnable onClick = new Runnable() {
             @Override
-            public void onTick(long l) {
+            public void run() {
+                score++;
+                moles[currentMole].setVisibility(View.GONE);
+            }
+        };
+
+        final Runnable showMole = new Runnable() {
+            @Override
+            public void run() {
+                moles[currentMole].setVisibility(View.VISIBLE);
+                moles[currentMole].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        runOnUiThread(onClick);
+                    }
+                });
+            }
+        };
+
+        final Runnable runOnTick = new Runnable() {
+            @Override
+            public void run() {
                 time--;
                 timeView.setText(Integer.toString(time));
                 currentMole = (int)(Math.random()*7);
-                runOnUiThread(new Runnable() {
+                runOnUiThread(showMole);
+            }
+        };
+
+        timer = new CountDownTimer(60000, 1000) {
+            @Override
+            public void onTick(long l) {
+                moles[currentMole].setVisibility(View.GONE);
+                //runOnUiThread(runOnTick);
+                time--;
+                timeView.setText(Integer.toString(time));
+                currentMole = (int)(Math.random()*7);
+                moles[currentMole].setVisibility(View.VISIBLE);
+                moles[currentMole].setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        moles[currentMole].setVisibility(View.VISIBLE);
-                        moles[currentMole].setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                score++;
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        moles[currentMole].setVisibility(View.GONE);
-                                    }
-                                });
-                            }
-                        });
+                    public void onClick(View view) {
+                        score++;
+                        moles[currentMole].setVisibility(View.GONE);
                     }
                 });
-                moles[currentMole].setOnClickListener(null);
             }
 
             @Override
             public void onFinish() {
                 mediaPlayer.stop();
                 Intent endIntent = new Intent(GameActivity.this, EndActivity.class);
-                endIntent.putExtra("SCORE", score);
+                endIntent.putExtra("score", score);
                 startActivity(endIntent);
             }
         }.start();
+    }
+
+    public void onClick(View v){
+        score++;
+        moles[currentMole].setVisibility(View.GONE);
     }
 }
